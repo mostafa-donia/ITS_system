@@ -428,6 +428,9 @@ btn_salaries.setFixedWidth(180)
 btn_salaries.clicked.connect(on_salaries_click)
 left_panel_layout.addWidget(btn_salaries, alignment=Qt.AlignCenter)
 
+print("Buttons Created")
+
+
 #btn_students
 btn_students = QPushButton("🎓Students")
 btn_students.setStyleSheet(btn_off)
