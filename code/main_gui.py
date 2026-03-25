@@ -391,6 +391,7 @@ btn_daily_sessions.clicked.connect(on_daily_sessions_click)
 left_panel_layout.addWidget(btn_daily_sessions, alignment=Qt.AlignCenter)
 
 
+
 #btn_financial
 # test
 btn_financial = QPushButton("💳financial")
