@@ -31,7 +31,7 @@ btn_off =f"""
     padding: 10px 20px;
     border: none;
     border-radius: 10px;
-    font-size: 10px;
+    font-size: 20px;
     font-weight: bold;
 """
 btn_on = f"""
@@ -40,7 +40,7 @@ btn_on = f"""
     padding: 10px 20px;
     border: none;
     border-radius: 10px;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
 """
 
@@ -367,7 +367,7 @@ main_layout.addWidget(content_area)
 left_panel = QWidget()
 left_panel.setStyleSheet(f"background-color: {colors['primary']};")
 left_panel_layout = QVBoxLayout(left_panel)
-left_panel.setFixedWidth(200)
+left_panel.setFixedWidth(210)
 
 
 logo = QLabel()
@@ -375,118 +375,119 @@ logo.setPixmap(QPixmap("assets/logo.jpeg").scaled(120, 120, Qt.KeepAspectRatioBy
 left_panel_layout.addWidget(logo, alignment=Qt.AlignCenter)
 
 
-
+button_grid = QWidget()
+button_layout = QGridLayout(button_grid)
 #btn_whatsapp_sender test
-btn_whatsapp_sender = QPushButton("💬Whatsapp")
+btn_whatsapp_sender = QPushButton("💬")
 btn_whatsapp_sender.setStyleSheet(btn_off)
-btn_whatsapp_sender.setFixedWidth(180)
+btn_whatsapp_sender.setFixedWidth(80)
 btn_whatsapp_sender.clicked.connect(on_whatsapp_sender_click)
-left_panel_layout.addWidget(btn_whatsapp_sender, alignment=Qt.AlignCenter)
+button_layout.addWidget(btn_whatsapp_sender, 0, 0, alignment=Qt.AlignCenter)
 
 #btn_daily_sessions test
-btn_daily_sessions = QPushButton("📚Daily")
+btn_daily_sessions = QPushButton("📚")
 btn_daily_sessions.setStyleSheet(btn_off)
-btn_daily_sessions.setFixedWidth(180)
+btn_daily_sessions.setFixedWidth(80)
 btn_daily_sessions.clicked.connect(on_daily_sessions_click)
-left_panel_layout.addWidget(btn_daily_sessions, alignment=Qt.AlignCenter)
-
+button_layout.addWidget(btn_daily_sessions, 0, 1, alignment=Qt.AlignCenter)
 
 
 #btn_financial
 # test
-btn_financial = QPushButton("💳financial")
+btn_financial = QPushButton("💳")
 btn_financial.setStyleSheet(btn_off)
-btn_financial.setFixedWidth(180)
+btn_financial.setFixedWidth(80)
 btn_financial.clicked.connect(on_financial_click)
-left_panel_layout.addWidget(btn_financial, alignment=Qt.AlignCenter)
+button_layout.addWidget(btn_financial, 1, 0, alignment=Qt.AlignCenter)
 
 #btn_receivables
-btn_receivables = QPushButton("📊Receivables")
+btn_receivables = QPushButton("📊")
 btn_receivables.setStyleSheet(btn_off)
-btn_receivables.setFixedWidth(180)
+btn_receivables.setFixedWidth(80)
 btn_receivables.clicked.connect(on_receivables_click)
-left_panel_layout.addWidget(btn_receivables, alignment=Qt.AlignCenter)
+button_layout.addWidget(btn_receivables, 1, 1, alignment=Qt.AlignCenter)
 
 #btn_waiting
-btn_waiting = QPushButton("⏳Waiting")
+btn_waiting = QPushButton("⏳")
 btn_waiting.setStyleSheet(btn_off)
-btn_waiting.setFixedWidth(180)
+btn_waiting.setFixedWidth(80)
 btn_waiting.clicked.connect(on_waiting_click)
-left_panel_layout.addWidget(btn_waiting, alignment=Qt.AlignCenter)
+button_layout.addWidget(btn_waiting, 2, 0, alignment=Qt.AlignCenter)
 
 #btn_savings_debt
-btn_savings_debt = QPushButton("💰Savings & Debt")
+btn_savings_debt = QPushButton("💰")
 btn_savings_debt.setStyleSheet(btn_off)
-btn_savings_debt.setFixedWidth(180)
+btn_savings_debt.setFixedWidth(80)
 btn_savings_debt.clicked.connect(on_savings_debt_click)
-left_panel_layout.addWidget(btn_savings_debt, alignment=Qt.AlignCenter)
+button_layout.addWidget(btn_savings_debt, 2, 1, alignment=Qt.AlignCenter)
 
 #btn_salaries
-btn_salaries = QPushButton("👥Salaries")
+btn_salaries = QPushButton("👥")
 btn_salaries.setStyleSheet(btn_off)
-btn_salaries.setFixedWidth(180)
+btn_salaries.setFixedWidth(80)
 btn_salaries.clicked.connect(on_salaries_click)
-left_panel_layout.addWidget(btn_salaries, alignment=Qt.AlignCenter)
+button_layout.addWidget(btn_salaries, 3, 0, alignment=Qt.AlignCenter)
 
 print("Buttons Created")
 
 
 #btn_students
-btn_students = QPushButton("🎓Students")
+btn_students = QPushButton("🎓")
 btn_students.setStyleSheet(btn_off)
-btn_students.setFixedWidth(180)
+btn_students.setFixedWidth(80)
 btn_students.clicked.connect(on_students_click)
-left_panel_layout.addWidget(btn_students, alignment=Qt.AlignCenter)
+button_layout.addWidget(btn_students, 3, 1, alignment=Qt.AlignCenter)
 
 #btn_cash_counter
-btn_cash_counter = QPushButton("💵Cash Counter")
+btn_cash_counter = QPushButton("💵")
 btn_cash_counter.setStyleSheet(btn_off)
-btn_cash_counter.setFixedWidth(180)
+btn_cash_counter.setFixedWidth(80)
 btn_cash_counter.clicked.connect(on_cash_counter_click)
-left_panel_layout.addWidget(btn_cash_counter, alignment=Qt.AlignCenter)
+button_layout.addWidget(btn_cash_counter, 4, 0, alignment=Qt.AlignCenter)
 
 #btn_settings
-btn_settings = QPushButton("⚙️Settings")
+btn_settings = QPushButton("⚙️")
 btn_settings.setStyleSheet(btn_off)
-btn_settings.setFixedWidth(180)
+btn_settings.setFixedWidth(80)
 btn_settings.clicked.connect(on_settings_click)
-left_panel_layout.addWidget(btn_settings, alignment=Qt.AlignCenter)
+button_layout.addWidget(btn_settings, 4, 1, alignment=Qt.AlignCenter)
 
 #btn_prices
-btn_prices = QPushButton("🏷️Prices")
+btn_prices = QPushButton("🏷️")
 btn_prices.setStyleSheet(btn_off)
-btn_prices.setFixedWidth(180)
+btn_prices.setFixedWidth(80)
 btn_prices.clicked.connect(on_prices_click)
-left_panel_layout.addWidget(btn_prices, alignment=Qt.AlignCenter)
+button_layout.addWidget(btn_prices, 5, 0, alignment=Qt.AlignCenter)
 
 #btn_running
-btn_running = QPushButton("🏃Running")
+btn_running = QPushButton("🏃")
 btn_running.setStyleSheet(btn_off)
-btn_running.setFixedWidth(180)
+btn_running.setFixedWidth(80)
 btn_running.clicked.connect(on_running_click)
-left_panel_layout.addWidget(btn_running, alignment=Qt.AlignCenter)
+button_layout.addWidget(btn_running, 5, 1, alignment=Qt.AlignCenter)
 
 #btn_orders
-btn_orders = QPushButton("📦Orders")
+btn_orders = QPushButton("📦")
 btn_orders.setStyleSheet(btn_off)
-btn_orders.setFixedWidth(180)
+btn_orders.setFixedWidth(80)
 btn_orders.clicked.connect(on_orders_click)
-left_panel_layout.addWidget(btn_orders, alignment=Qt.AlignCenter)
+button_layout.addWidget(btn_orders, 6, 0, alignment=Qt.AlignCenter)
 
 #btn_tournament
-btn_tournament = QPushButton("🏆Tournament")
+btn_tournament = QPushButton("🏆")
 btn_tournament.setStyleSheet(btn_off)
-btn_tournament.setFixedWidth(180)
+btn_tournament.setFixedWidth(80)
 btn_tournament.clicked.connect(on_tournament_click)
-left_panel_layout.addWidget(btn_tournament, alignment=Qt.AlignCenter)
+button_layout.addWidget(btn_tournament, 6, 1, alignment=Qt.AlignCenter)
 
 #btn_dashboard
-btn_dashboard = QPushButton("📊Dashboard")
+btn_dashboard = QPushButton("📈")
 btn_dashboard.setStyleSheet(btn_off)
 btn_dashboard.setFixedWidth(180)
 btn_dashboard.clicked.connect(on_dashboard_click)
-left_panel_layout.addWidget(btn_dashboard, alignment=Qt.AlignCenter)
+button_layout.addWidget(btn_dashboard, 7, 0, alignment=Qt.AlignCenter)
 
+left_panel_layout.addWidget(button_grid)
 
 left_panel.setStyleSheet(f"""
     background-color: {colors['primary']};
