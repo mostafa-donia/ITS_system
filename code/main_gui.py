@@ -1,6 +1,14 @@
 from PySide6.QtWidgets import *
 from PySide6.QtGui import QPixmap, QPainter, QPainterPath
 from PySide6.QtCore import Qt, QPropertyAnimation,QParallelAnimationGroup
+from time import strftime,sleep
+from threading import Thread
+from whatsapp import prepare_messages, prepare_phones, sending
+
+clock  =  strftime("%I:%M:%S")
+date =  strftime("%a.%d/%m")
+time =  "🕰️ "+clock+" 📆 "+ date
+time_label = ""
 
 colors = {
     "background": "#1C2230",
@@ -31,7 +39,7 @@ btn_off =f"""
     padding: 10px 20px;
     border: none;
     border-radius: 10px;
-    font-size: 20px;
+    font-size: 30px;
     font-weight: bold;
 """
 btn_on = f"""
@@ -40,7 +48,7 @@ btn_on = f"""
     padding: 10px 20px;
     border: none;
     border-radius: 10px;
-    font-size: 20px;
+    font-size: 30px;
     font-weight: bold;
 """
 
@@ -99,7 +107,14 @@ def all_btns_off():
     btn_tournament.setStyleSheet(btn_off)
     btn_dashboard.setEnabled(True)
     btn_dashboard.setStyleSheet(btn_off)
-    
+def time_update():
+    global time,time_label
+    clock  =  strftime("%I:%M:%S")
+    date =  strftime("%a.%d/%m")
+    time =  "🕰️ "+clock+" 📆 "+ date
+    time_label.setText(time)
+    sleep(1)
+    time_update()
 
 def on_whatsapp_sender_click():
     fade_to_page(0)
@@ -192,13 +207,156 @@ def on_dashboard_click():
     btn_dashboard.setEnabled(False)
     btn_dashboard.setStyleSheet(btn_on)
 
+bulk_phone_entry = None
+text_box = None
+def send_bulk_message():
+    global bulk_phone_entry, text_box
+    print("Sending Bulk Message...")
+    print("Raw Phones:", bulk_phone_entry.text())
+    print("Raw Messages:", text_box.toPlainText())
+    phones = prepare_phones(bulk_phone_entry.text())
+    messages = prepare_messages(text_box.toPlainText())
+    bulk_phone_entry.clear()
+    text_box.clear()
+    sending(phones, messages)
+    
+
 def create_whatsapp_page():
+    global time,time_label,bulk_phone_entry,text_box
     page = QWidget()
-    page.setStyleSheet(f"background-color: {colors['whatsapp_green']}; border-radius: 15px;")
-    layout = QVBoxLayout(page)
+    page.setStyleSheet(f"background-color: {colors['background']}; border-radius: 15px;")
+    layout_page = QVBoxLayout(page)
+    
+    top_bar = QHBoxLayout()
+    layout_page.addLayout(top_bar)
+    
+    icon_path = r"assets\whatsapp.ico"
+    icon_label = QLabel()
+    icon_label.setPixmap(QPixmap(icon_path).scaled(60, 60, Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
+)
+    top_bar.addWidget(icon_label)
+    top_bar.addSpacing(20)
+    
     label = QLabel("WhatsApp Sender Page")
-    label.setStyleSheet(f"color: {colors['white']}; font-size: 24px;")
-    layout.addWidget(label, alignment=Qt.AlignCenter)
+    label.setStyleSheet(f"color: {colors['white']}; font-size: 30px;  font-weight: bold;")
+    top_bar.addWidget(label)
+    top_bar.addStretch()
+    
+    clock  =  strftime("%I:%M:%S")
+    date =  strftime("%d/%m")
+    time =  "🕰️ "+clock+" 📆 "+ date
+    time_label =  QLabel(time)
+    time_label.setStyleSheet(f"color: {colors['white']}; font-size: 20px;  font-weight: bold;")
+    top_bar.addWidget(time_label)
+    Thread(target=time_update).start()
+    
+    layout_page.addSpacing(10)
+    main_content = QHBoxLayout()
+    layout_page.addLayout(main_content)
+    
+    bulk_send = QWidget()
+    bulk_send.setMinimumHeight(screenh*0.65)
+    bulk_send.setStyleSheet(f"background-color: {colors['primary']}; border-radius: 15px;")
+    bulk_send_layout = QVBoxLayout(bulk_send)
+
+    
+    label = QLabel("Multi Phone Numbers📞")
+    label.setStyleSheet(f"color: {colors['white']}; font-size: 20px;  font-weight: bold;")
+    bulk_send_layout.addWidget(label,alignment=Qt.AlignCenter)
+    bulk_send_layout.addSpacing(30)
+    
+    label = QLabel("  Phone Numbers : ")
+    label.setStyleSheet(f"color: {colors['white']}; font-size: 15px;")
+    bulk_send_layout.addWidget(label)
+    bulk_send_layout.addSpacing(15)
+    
+    bulk_phone_entry = QLineEdit()
+    bulk_phone_entry.setPlaceholderText("Enter phones seprated by comma....")   
+    bulk_phone_entry.setStyleSheet(f"QLineEdit {{padding: 8px;border: 2px solid #555;border-radius: 6px; background-color: {colors['background']}; color: white; font-size: 14px; }}")
+    bulk_send_layout.addWidget(bulk_phone_entry)
+    bulk_send_layout.addSpacing(15)
+    
+    label = QLabel("  Messages : ")
+    label.setStyleSheet(f"color: {colors['white']}; font-size: 15px;")
+    bulk_send_layout.addWidget(label)
+    bulk_send_layout.addSpacing(15)
+
+    
+    text_frame = QFrame()
+    text_frame.setStyleSheet(f"""
+        QFrame {{
+            background-color: {colors['background']};
+            border: 2px solid #555;
+            border-radius: 8px;
+        }}
+    """)
+    frame_layout = QVBoxLayout(text_frame)
+    frame_layout.setContentsMargins(8, 8, 8, 8)
+    text_box = QTextEdit(lineWrapColumnOrWidth=20)
+    text_box.setPlaceholderText("Messages separated by comma or one message for all...")
+    text_box.setLineWrapMode(QTextEdit.WidgetWidth)
+    text_box.setFrameStyle(QFrame.NoFrame)
+    text_box.setStyleSheet("""
+        QTextEdit {
+            background: transparent;
+            color: white;
+            border: none;
+            font-size: 14px;
+        }
+    """)
+    frame_layout.addWidget(text_box)
+    bulk_send_layout.addWidget(text_frame)
+    bulk_send_layout.addSpacing(15)
+    
+    send_button = QPushButton("Send Messages")
+    send_button.setStyleSheet(f"""
+        QPushButton {{
+            background-color: {colors['secondary']};
+            color: {colors['black']};
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }}
+        QPushButton:hover {{
+            background-color: {colors['white']};
+        }}
+    """)    
+    send_button.clicked.connect(send_bulk_message)
+    bulk_send_layout.addWidget(send_button, alignment=Qt.AlignCenter)
+    bulk_send_layout.addSpacing(15)
+    bulk_send_layout.addStretch()
+    
+
+    main_content.addWidget(bulk_send)
+    main_content.addSpacing(10)
+    
+    course_send = QWidget()
+    course_send.setMinimumHeight(screenh*0.65)
+    course_send.setStyleSheet(f"background-color: {colors['primary']}; border-radius: 15px;")
+    course_send_layout = QVBoxLayout(course_send)
+
+    course_phone_entry = QLineEdit()
+    course_phone_entry.setPlaceholderText(" 🚧 Under Construction 🚩")
+    course_send_layout.addWidget(course_phone_entry)
+    
+    
+    main_content.addWidget(course_send)
+    main_content.addSpacing(10)
+    
+    byid = QWidget()
+    byid.setMinimumHeight(screenh*0.65)
+    byid.setStyleSheet(f"background-color: {colors['primary']}; border-radius: 15px;")
+    byid_send_layout = QVBoxLayout(byid)
+    byid_phone_entry = QLineEdit()
+    byid_phone_entry.setPlaceholderText(" 🚧 Under Construction 🚩")
+    byid_send_layout.addWidget(byid_phone_entry)
+    
+    main_content.addWidget(byid)
+    main_content.addSpacing(10)
+
+    
     return page
 def create_daily_sessions_page():
     page = QWidget()
@@ -352,7 +510,8 @@ def fade_to_page(index):
 
 fade_group = None  
 app = QApplication([])
-
+screenw,screenh =  app.primaryScreen().size().toTuple()
+print(screenw,screenh)
 window = QMainWindow()
 window.setStyleSheet(f"background-color: {colors['background']};")
 
@@ -379,7 +538,7 @@ button_grid = QWidget()
 button_layout = QGridLayout(button_grid)
 #btn_whatsapp_sender test
 btn_whatsapp_sender = QPushButton("💬")
-btn_whatsapp_sender.setStyleSheet(btn_off)
+btn_whatsapp_sender.setStyleSheet(btn_on)
 btn_whatsapp_sender.setFixedWidth(80)
 btn_whatsapp_sender.clicked.connect(on_whatsapp_sender_click)
 button_layout.addWidget(btn_whatsapp_sender, 0, 0, alignment=Qt.AlignCenter)
@@ -551,7 +710,7 @@ right_panel.addWidget(dashboard_page)
 right_panel.setCurrentIndex(0)
 
 
-footer = QLabel("© 2026  Mostafa Donia. All rights reserved.")
+footer = QLabel("© 2026  Eng. Mostafa Donia. All rights reserved.")
 footer.setStyleSheet(f"color: {colors['white']}; font-size: 12px;")
 footer.setMaximumHeight(30)
 main_layout.addWidget(footer, alignment=Qt.AlignCenter)
