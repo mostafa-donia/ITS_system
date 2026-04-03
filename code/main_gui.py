@@ -3,7 +3,7 @@ from PySide6.QtGui import QPixmap, QPainter, QPainterPath
 from PySide6.QtCore import Qt, QPropertyAnimation,QParallelAnimationGroup
 from time import strftime,sleep
 from threading import Thread
-from whatsapp import prepare_messages, prepare_phones, sending
+from code.whatsapp import prepare_messages, prepare_phones, sending
 
 clock  =  strftime("%I:%M:%S")
 date =  strftime("%a.%d/%m")
