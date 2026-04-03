@@ -4,6 +4,16 @@ from PySide6.QtCore import Qt, QPropertyAnimation,QParallelAnimationGroup
 from time import strftime,sleep
 from threading import Thread
 from code.whatsapp import prepare_messages, prepare_phones, sending
+import sys
+import os
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS  # PyInstaller temp path
+    except:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 clock  =  strftime("%I:%M:%S")
 date =  strftime("%a.%d/%m")
@@ -230,7 +240,7 @@ def create_whatsapp_page():
     top_bar = QHBoxLayout()
     layout_page.addLayout(top_bar)
     
-    icon_path = r"assets\whatsapp.ico"
+    icon_path = resource_path("assets\whatsapp.ico")
     icon_label = QLabel()
     icon_label.setPixmap(QPixmap(icon_path).scaled(60, 60, Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation)
 )
@@ -530,7 +540,7 @@ left_panel.setFixedWidth(210)
 
 
 logo = QLabel()
-logo.setPixmap(QPixmap("assets/logo.jpeg").scaled(120, 120, Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation))
+logo.setPixmap(QPixmap(resource_path("assets/logo.jpeg")).scaled(120, 120, Qt.KeepAspectRatioByExpanding, Qt.SmoothTransformation))
 left_panel_layout.addWidget(logo, alignment=Qt.AlignCenter)
 
 
@@ -710,7 +720,7 @@ right_panel.addWidget(dashboard_page)
 right_panel.setCurrentIndex(0)
 
 
-footer = QLabel("© 2026  Eng. Mostafa Donia. All rights reserved.")
+footer = QLabel("© 2026  Eng. Mostafa Donia. All rights reserved. Version 1.0.0")
 footer.setStyleSheet(f"color: {colors['white']}; font-size: 12px;")
 footer.setMaximumHeight(30)
 main_layout.addWidget(footer, alignment=Qt.AlignCenter)
